@@ -10,9 +10,55 @@ window.addEventListener('scroll', () => {
 
 // Mobile menu toggle
 const menuToggle = document.getElementById('menuToggle');
-const nav = document.getElementById('nav');
-menuToggle.addEventListener('click', () => {
+const nav = document.getElementById('nav');;
+
+// Crear overlay
+const overlay = document.createElement('div');
+overlay.className = 'nav-overlay';
+document.body.appendChild(overlay);
+
+
+// Toggle menú
+menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     nav.classList.toggle('active');
+    overlay.classList.toggle('active');
+    menuToggle.classList.toggle('active');
+    
+    // Prevenir scroll del body cuando el menú está abierto
+    if (nav.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+});
+
+// Cerrar menú al hacer click en el overlay
+overlay.addEventListener('click', () => {
+    nav.classList.remove('active');
+    overlay.classList.remove('active');
+    menuToggle.classList.remove('active');
+    document.body.style.overflow = '';
+});
+
+// Close menu when clicking on a link - OPTIMIZADO
+nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        overlay.classList.remove('active');
+        menuToggle.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+});
+
+// Cerrar menú con tecla ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('active')) {
+        nav.classList.remove('active');
+        overlay.classList.remove('active');
+        menuToggle.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 });
 
 // Close menu when clicking on a link
