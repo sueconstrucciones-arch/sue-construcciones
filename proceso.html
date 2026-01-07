@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso - Sue </title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f5f5f5;
+            --accent: #3b82f6;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --gray: #6b7280;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .header.scrolled .logo {
+            color: var(--text-dark);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled .nav a {
+            color: var(--text-dark);
+        }
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920') center/cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 900px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Process Steps */
+        .process-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 5%;
+        }
+
+        .process-step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 8rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .process-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .process-step:nth-child(even) {
+            direction: rtl;
+        }
+
+        .process-step:nth-child(even) .step-content {
+            direction: ltr;
+        }
+
+        .step-image {
+            width: 100%;
+            height: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .process-step:hover .step-image img {
+            transform: scale(1.05);
+        }
+
+        .step-content {
+            padding: 2rem;
+        }
+
+        .step-number {
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(59, 130, 246, 0.1);
+            line-height: 1;
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .step-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .step-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .step-description strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Testimonial Section */
+        .testimonial-section {
+            background: var(--primary);
+            color: var(--text-light);
+            padding: 6rem 5%;
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.3;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.5;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+        }
+
+        .testimonial-author {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 5%;
+            background: var(--secondary);
+        }
+
+        .cta-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .cta-content h2 em {
+            font-style: italic;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--primary);
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .cta-image {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: var(--text-light);
+            padding: 4rem 5% 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: left;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+            padding-left: 10px;
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        #floatingBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+
+            background: var(--accent);
+            color: var(--text-dark);
+            padding: 0.9rem 1.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        #floatingBtn.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        #floatingBtn:hover {
+            transform: translateY(-4px);
+        }
+
+
+
+
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav {
+                display: none;
+            }
+
+            .process-step,
+            .process-step:nth-child(even) {
+                grid-template-columns: 1fr;
+                direction: ltr;
+                gap: 2rem;
+                margin-bottom: 4rem;
+            }
+
+            .step-image {
+                height: 400px;
+            }
+
+            .step-number {
+                font-size: 5rem;
+            }
+
+            .cta-container {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-image {
+                height: 400px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <a href="#" class="logo">
+           <a href="#inicio" class="logo">
+            <img src="imagenes\logo sue.jpg" alt="SUE Construcciones">
+            </a>
+        </a>
+        <nav class="nav" id="nav">
+            <a href="#inicio">Inicio</a>
+            <a href="#proceso">Proceso</a>
+            <a href="#modelos">Modelos</a>
+            <a href="#beneficios">Beneficios</a>
+            <a href="#proyectos">Proyectos</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-subtitle">Proceso</div>
+            <h1>
+                <em>Completamente terminadas</em><br>
+                Casas pre-diseñadas
+            </h1>
+        </div>
+    </section>
+
+<a href="index.html" id="floatingBtn" aria-label="Volver al inicio">
+    ⬅ Volver
+</a>
+
+
+    <!-- Process Steps -->
+    <div class="process-container">
+        <!-- Step 01 -->
+        <div class="process-step">
+            <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800" alt="Elegir diseño">
+            </div>
+            <div class="step-content">
+                <div class="step-number">01</div>
+                <h2 class="step-title">Elige tu diseño</h2>
+                <p class="step-description">
+                    <strong>Es un proceso rápido y sin estrés —</strong> Muchas personas se frustran al intentar diseñar y construir sus casas. Nuestro equipo ha simplificado todo el proceso de diseño. Ofrecemos una línea de modelos únicos para satisfacer tus necesidades y un proceso simplificado de selección de acabados y accesorios. Cada casa está inspirada en un estilo moderno con arquitectura atemporal.
+                </p>
+                <p class="step-description">
+                    Ya sea que estés planeando construir la casa de tus sueños, un espacio creativo para tu oficina o un lugar tranquilo en el bosque, nuestras casas prefabricadas son una forma sencilla de realizar sin esfuerzo el sueño de tu nuevo hogar.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 02 -->
+        <div class="process-step">
+            <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800" alt="Evaluar terreno">
+            </div>
+            <div class="step-content">
+                <div class="step-number">02</div>
+                <h2 class="step-title">Evalúa tu terreno</h2>
+                <p class="step-description">
+                    <strong>¿Tu terreno está listo para una casa modular? —</strong> Esa es la gran pregunta. Al evaluar tu terreno, hay factores importantes a considerar: 1) Los caminos que conducen a la propiedad deben ser accesibles por camión plataforma para transportar los módulos. Los caminos de acceso deberán acomodar dimensiones de hasta 60 pies de largo, 15 pies de ancho y 15 pies de alto.
+                </p>
+                <p class="step-description">
+                    2) Debe haber un área de preparación segura para descargar los módulos con una grúa móvil y sin líneas eléctricas aéreas excesivas u otros obstáculos de entrega. Podemos ayudarte a evaluar la viabilidad de tu sitio. Para acelerar el proceso, es útil tener listo un estudio topográfico, informe de suelo e imágenes de la propiedad.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 03 -->
+        <div class="process-step">
+            <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800" alt="Seleccionar opciones">
+            </div>
+            <div class="step-content">
+                <div class="step-number">03</div>
+                <h2 class="step-title">Selecciona tus opciones</h2>
+                <p class="step-description">
+                    <strong>Hemos seleccionado todos los colores y acabados para ti —</strong> Pasar horas interminables estresándote sobre si los pisos, encimeras y gabinetes combinarán no es divertido. Con nosotros, obtienes una casa completamente diseñada y precoordinada por nuestros galardonados diseñadores.
+                </p>
+                <p class="step-description">
+                    La decisión más grande será elegir el paquete que coincida con tu estilo. Y mejora aún más: todos nuestros materiales sostenibles no afectarán negativamente tu salud ni el medio ambiente. Cada detalle ha sido cuidadosamente seleccionado para garantizar coherencia y calidad.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 04 -->
+        <div class="process-step">
+            <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800" alt="Vivir cómodamente">
+            </div>
+            <div class="step-content">
+                <div class="step-number">04</div>
+                <h2 class="step-title">Vive con comodidad</h2>
+                <p class="step-description">
+                    <strong>Tu hogar operará a plena capacidad desde el día que te mudes —</strong> Los paneles solares producirán energía limpia para uso inmediato o recargarán la batería cuando sea necesario. Nuestras casas superan el estándar hermético de Passive House (a diferencia de una casa nueva típica construida hoy, con 12 veces la pérdida de energía).
+                </p>
+                <p class="step-description">
+                    El flujo de aire y el agua serán purificados. Nuestro sistema de monitoreo interno te mantendrá actualizado 24/7 sobre el rendimiento de tu hogar. Y todo esto sucede porque creemos que tu hogar debe ser el producto más avanzado del mercado.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 05 -->
+        <div class="process-step">
+            <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800" alt="Toque final">
+            </div>
+            <div class="step-content">
+                <div class="step-number">05</div>
+                <h2 class="step-title">El toque final</h2>
+                <p class="step-description">
+                    <strong>Reúnelo todo con muebles y extras —</strong> ¿Quién mejor para ayudarte a elegir muebles y decoración para tu nuevo hogar que nuestro equipo de diseño? Su experiencia va más allá del diseño de casas y se extiende a la decoración de espacios únicos.
+                </p>
+                <p class="step-description">
+                    Usa tu casa terminada como lienzo para diseñar e instalar un porche, jardines alrededor de la casa, árboles para sombra y cualquier otra cosa que haga que tu hogar sea extra especial. Podemos proporcionar servicios de diseño para complementar tu hogar y adaptarse a tu terreno elegido.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial-section">
+        <div class="quote-icon">"</div>
+        <p class="testimonial-text">
+            Todo el proceso fue fluido. Perdimos nuestra casa en un incendio y necesitábamos que nuestra próxima casa nos mantuviera seguros y fuera resistente al fuego.
+        </p>
+        <p class="testimonial-author">— María González, Barcelona</p>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2>Comienza con <em>la casa de tus sueños</em></h2>
+                <a href="#" class="cta-button">Elige tu hogar</a>
+            </div>
+            <div class="cta-image">
+                <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800" alt="Casa moderna">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <a href="#">Acerca de</a>
+                <a href="#">Proyectos</a>
+                <a href="#">Blog</a>
+                <a href="#">Carreras</a>
+            </div>
+            <div class="footer-section">
+                <h4>Soluciones</h4>
+                <a href="#">Residencial</a>
+                <a href="#">Comercial</a>
+                <a href="#">Industrial</a>
+                <a href="#">Desarrolladores</a>
+            </div>
+            <div class="footer-section">
+                <h4>Recursos</h4>
+                <a href="#">FAQ</a>
+                <a href="#">Documentación</a>
+                <a href="#">Soporte</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#">Términos de uso</a>
+                <a href="#">Privacidad</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tu Empresa - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all process steps
+        document.querySelectorAll('.process-step').forEach(step => {
+            observer.observe(step);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+
+        const floatingBtn = document.getElementById('floatingBtn');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                floatingBtn.classList.add('show');
+            } else {
+                floatingBtn.classList.remove('show');
+            }
+        });
+
+    </script>
+
+
+
+
+</body>
+</html>
