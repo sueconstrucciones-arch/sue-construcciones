@@ -730,18 +730,7 @@ body {
 
 
 /* carrusel */
- * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .carousel-container {
+.carousel-container {
             position: relative;
             width: 100%;
             height: 100vh;
@@ -914,3 +903,7 @@ body {
                 padding: 0 8%;
             }
         }
+
+
+
+        

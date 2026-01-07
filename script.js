@@ -134,7 +134,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-
  let currentSlide = 0;
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.dot');
@@ -203,4 +202,9 @@ window.addEventListener('scroll', () => {
             if (touchEndX > touchStartX + 50) {
                 changeSlide(-1);
             }
-        };
+        }
+
+
+
+
+        
